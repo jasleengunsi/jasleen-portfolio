@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Second Opinion — Jasleen Gunsi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black: #1d1d1f;
+  --white: #ffffff;
+  --gray: #6e6e73;
+  --light: #f5f5f7;
+  --border: #d2d2d7;
+  --blue: #0071e3;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  background: var(--white);
+  color: var(--black);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  height: 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem;
+}
+.nav-name { font-size: 14px; font-weight: 500; color: var(--black); text-decoration: none; letter-spacing: -0.01em; }
+.nav-links { display: flex; gap: 1.8rem; list-style: none; }
+.nav-links a { font-size: 13px; color: var(--black); text-decoration: none; opacity: 0.55; transition: opacity 0.15s; }
+.nav-links a:hover { opacity: 1; }
+.nav-cta { font-size: 13px; color: var(--blue); text-decoration: none; transition: opacity 0.15s; }
+.nav-cta:hover { opacity: 0.75; }
+
+/* HERO IMAGE */
+.hero-image {
+  margin-top: 48px;
+  width: 100%; aspect-ratio: 16/6;
+  background: linear-gradient(135deg, #080d12 0%, #0d1a24 60%, #091018 100%);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.hero-image img {
+  width: 100%; height: 100%; object-fit: cover; object-position: top;
+}
+.hero-placeholder {
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  text-align: center;
+}
+.hero-placeholder-label {
+  font-size: 11px; color: rgba(255,255,255,0.2);
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+.hero-placeholder-sub {
+  font-size: 10px; color: rgba(255,255,255,0.1);
+}
+
+/* AT A GLANCE */
+.glance {
+  max-width: 1040px; margin: 0 auto;
+  padding: 4.5rem 3rem 1.5rem;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.glance-item { padding: 0; }
+.glance-item:not(:last-child) { border-right: 1px solid var(--border); padding-right: 2.5rem; margin-right: 2.5rem; }
+.glance-label { font-size: 10px; font-weight: 500; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+.glance-value { font-size: 0.875rem; color: var(--black); line-height: 1.5; font-weight: 400; }
+
+/* MAIN */
+.case { max-width: 1040px; margin: 0 auto; padding: 0 3rem; }
+
+.section { padding: 5rem 0; border-bottom: 1px solid var(--border); }
+.section:last-of-type { border-bottom: none; }
+
+.section-eyebrow {
+  font-size: 10px; font-weight: 500; color: var(--gray);
+  text-transform: uppercase; letter-spacing: 0.14em;
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 1.8rem;
+}
+.section-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.section h2 {
+  font-family: var(--serif); font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 400; line-height: 1.15; letter-spacing: -0.02em;
+  margin-bottom: 1.2rem; max-width: 780px;
+}
+.section p {
+  font-size: 0.9375rem; color: var(--gray); line-height: 1.75;
+  max-width: 680px; margin-bottom: 1rem; font-weight: 300;
+}
+.section p strong { color: var(--black); font-weight: 500; }
+
+/* NUMBERED LIST */
+.numbered-list { display: flex; flex-direction: column; gap: 0; margin: 2rem 0; }
+.numbered-item {
+  display: flex; gap: 1.5rem; align-items: flex-start;
+  padding: 1.4rem 0; border-bottom: 1px solid var(--border);
+}
+.numbered-item:first-child { border-top: 1px solid var(--border); }
+.num-badge {
+  font-size: 11px; font-weight: 500; color: var(--gray);
+  background: var(--light); border-radius: 6px; padding: 3px 8px;
+  flex-shrink: 0; margin-top: 1px; letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.num-content h3 { font-size: 0.9375rem; font-weight: 500; margin-bottom: 0.25rem; }
+.num-content p { font-size: 0.875rem; color: var(--gray); margin-bottom: 0; max-width: 100%; line-height: 1.6; }
+
+/* HMW CALLOUT */
+.hmw {
+  background: var(--light); border-radius: 16px;
+  padding: 2rem 2.2rem; margin: 2.5rem 0;
+  position: relative; overflow: hidden;
+  display: flex; gap: 1rem; align-items: flex-start;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.hmw:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+.hmw-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+.hmw-label {
+  font-size: 10px; font-weight: 500; color: var(--gray);
+  text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.5rem;
+}
+.hmw-text {
+  font-family: var(--serif);
+  font-size: 1.1rem; color: var(--black); line-height: 1.6;
+}
+.hmw-glow {
+  position: absolute; width: 300px; height: 300px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(99,179,237,0.08) 0%, transparent 70%);
+  bottom: -100px; right: -50px; pointer-events: none;
+}
+
+/* RESEARCH FINDING CARDS */
+.finding-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+.finding-card {
+  background: var(--light); border-radius: 16px; padding: 1.8rem 2rem;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.finding-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+.finding-num {
+  font-size: 10px; font-weight: 500; color: var(--blue);
+  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.6rem;
+}
+.finding-card h3 { font-size: 0.9375rem; font-weight: 500; margin-bottom: 0.5rem; line-height: 1.3; }
+.finding-card p { font-size: 0.85rem; color: var(--gray); line-height: 1.65; margin-bottom: 0; max-width: 100%; }
+.finding-quote {
+  font-family: var(--serif); font-style: italic;
+  font-size: 0.875rem; color: var(--black);
+  border-left: 2px solid var(--border); padding-left: 0.8rem;
+  margin-top: 0.8rem; line-height: 1.6;
+}
+
+/* LAYER TABLE */
+.layer-table { margin-top: 2rem; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.layer-row { display: grid; grid-template-columns: 140px 1fr 1.5fr; border-bottom: 1px solid var(--border); }
+.layer-row:last-child { border-bottom: none; }
+.layer-row.header { background: var(--light); }
+.layer-cell { padding: 1rem 1.4rem; font-size: 0.875rem; }
+.layer-row.header .layer-cell { font-size: 10px; font-weight: 500; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; }
+.layer-cell:not(:last-child) { border-right: 1px solid var(--border); }
+.layer-name { font-weight: 500; }
+.layer-desc { color: var(--gray); line-height: 1.6; }
+
+/* MECHANIC CARDS */
+.mechanic-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+.mechanic-card {
+  background: var(--light); border-radius: 16px; padding: 1.6rem 1.8rem;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.mechanic-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+.mechanic-icon { font-size: 1.3rem; margin-bottom: 0.8rem; }
+.mechanic-card h3 { font-size: 0.9rem; font-weight: 500; margin-bottom: 0.4rem; }
+.mechanic-card p { font-size: 0.825rem; color: var(--gray); line-height: 1.6; margin-bottom: 0; max-width: 100%; }
+
+/* CASE CARDS */
+.case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+.case-card {
+  background: var(--light); border-radius: 16px; overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.case-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+.case-card-header {
+  background: var(--black); padding: 1.2rem 1.6rem;
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+.case-patient { font-size: 0.9rem; font-weight: 500; color: white; }
+.case-patient-sub { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+.case-confidence {
+  font-size: 11px; font-weight: 500;
+  padding: 3px 10px; border-radius: 100px;
+  background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);
+  white-space: nowrap;
+}
+.case-card-body { padding: 1.4rem 1.6rem; display: flex; flex-direction: column; gap: 0.8rem; }
+.case-error-type {
+  display: inline-block; font-size: 10px; font-weight: 500;
+  color: var(--blue); background: rgba(0,113,227,0.07);
+  border: 1px solid rgba(0,113,227,0.15);
+  padding: 3px 10px; border-radius: 100px;
+  letter-spacing: 0.04em; text-transform: uppercase; width: fit-content;
+}
+.case-card-body h3 { font-size: 0.9rem; font-weight: 500; line-height: 1.3; }
+.case-card-body p { font-size: 0.825rem; color: var(--gray); line-height: 1.6; margin-bottom: 0; max-width: 100%; }
+.case-consequence {
+  background: white; border: 1px solid var(--border); border-radius: 8px;
+  padding: 0.7rem 0.9rem; font-size: 0.8rem; color: var(--gray); line-height: 1.5;
+}
+.case-consequence strong { color: var(--black); font-weight: 500; }
+
+/* ERROR TYPOLOGY */
+.error-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+.error-card {
+  background: var(--light); border-radius: 16px; padding: 1.6rem 1.8rem;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.error-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+.error-label {
+  display: inline-block; font-size: 10px; font-weight: 500;
+  color: var(--black); background: white;
+  border: 1px solid var(--border);
+  padding: 3px 10px; border-radius: 100px;
+  letter-spacing: 0.04em; margin-bottom: 0.8rem; width: fit-content;
+}
+.error-card h3 { font-size: 0.9rem; font-weight: 500; margin-bottom: 0.4rem; line-height: 1.3; }
+.error-card p { font-size: 0.825rem; color: var(--gray); line-height: 1.6; margin-bottom: 0; max-width: 100%; }
+.error-example {
+  font-family: var(--serif); font-style: italic;
+  font-size: 0.825rem; color: var(--black);
+  margin-top: 0.7rem; padding-top: 0.7rem;
+  border-top: 1px solid var(--border); line-height: 1.5;
+}
+
+/* CONSEQUENCE SECTION */
+.consequence-flow {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0; margin-top: 2rem;
+  border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+}
+.consequence-step { padding: 1.6rem 1.8rem; position: relative; }
+.consequence-step:not(:last-child) { border-right: 1px solid var(--border); }
+.consequence-step-num {
+  font-size: 10px; font-weight: 500; color: var(--gray);
+  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;
+}
+.consequence-step h3 { font-size: 0.875rem; font-weight: 500; margin-bottom: 0.3rem; }
+.consequence-step p { font-size: 0.8rem; color: var(--gray); line-height: 1.55; margin-bottom: 0; max-width: 100%; }
+
+/* FIGMA SCREENS */
+.figma-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; align-items: start; }
+.figma-slot {
+  display: flex; flex-direction: column; gap: 0.8rem;
+}
+.figma-img {
+  width: 100%; border-radius: 14px; overflow: hidden;
+  background: var(--light); border: 1px solid var(--border);
+  aspect-ratio: 16/10;
+  display: flex; align-items: center; justify-content: center;
+}
+.figma-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 14px; }
+.figma-placeholder {
+  display: flex; flex-direction: column; align-items: center; gap: 0.4rem; text-align: center;
+}
+.fp-icon { font-size: 1.2rem; opacity: 0.3; }
+.fp-label { font-size: 10px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; }
+.fp-sub { font-size: 10px; color: var(--border); }
+.figma-annotation h3 { font-size: 0.875rem; font-weight: 500; margin-bottom: 0.3rem; }
+.figma-annotation p { font-size: 0.825rem; color: var(--gray); line-height: 1.6; margin-bottom: 0; max-width: 100%; }
+
+/* WHERE IT STANDS */
+.status-card {
+  background: var(--light); border-radius: 16px; padding: 2rem 2.2rem;
+  margin-top: 2rem; display: flex; gap: 1.2rem; align-items: flex-start;
+}
+.status-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+.status-text h3 { font-size: 0.9375rem; font-weight: 500; margin-bottom: 0.4rem; }
+.status-text p { font-size: 0.875rem; color: var(--gray); line-height: 1.7; margin-bottom: 0; max-width: 100%; }
+
+/* LEARNINGS */
+.learnings-list { display: flex; flex-direction: column; gap: 0; margin-top: 2rem; }
+.learning {
+  display: flex; gap: 1.2rem; align-items: flex-start;
+  padding: 1.5rem 0; border-bottom: 1px solid var(--border);
+}
+.learning:first-child { border-top: 1px solid var(--border); }
+.learning-icon {
+  width: 34px; height: 34px; border-radius: 8px; background: var(--light);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; flex-shrink: 0;
+}
+.learning h3 { font-size: 0.9375rem; font-weight: 500; margin-bottom: 0.25rem; }
+.learning p { font-size: 0.875rem; color: var(--gray); line-height: 1.65; margin-bottom: 0; max-width: 620px; }
+
+/* NEXT UP */
+.next-section { padding: 5rem 0 2rem; }
+.next-cards { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.5rem; max-width: 400px; }
+.next-card {
+  background: var(--light); border-radius: 16px; overflow: hidden;
+  text-decoration: none; color: var(--black);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.next-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
+.next-thumb { height: 140px; position: relative; overflow: hidden; background: linear-gradient(135deg, #080d08, #0d1a10); }
+.next-thumb-label { position: absolute; bottom: 1rem; left: 1.2rem; font-size: 10px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.1em; }
+.next-thumb-glyph { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 2rem; opacity: 0.12; }
+.next-body { padding: 1.2rem 1.4rem; }
+.next-title { font-size: 0.9375rem; font-weight: 500; margin-bottom: 0.25rem; }
+.next-desc { font-size: 0.8125rem; color: var(--gray); }
+
+/* SIGN OFF */
+.signoff { padding: 4rem 0 2rem; text-align: center; border-top: 1px solid var(--border); margin-top: 2rem; }
+.signoff p { font-family: var(--serif); font-style: italic; font-size: 1.05rem; color: var(--gray); line-height: 1.8; }
+
+/* FOOTER */
+footer {
+  max-width: 1040px; margin: 0 auto;
+  padding: 1.5rem 3rem;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid var(--border);
+}
+.footer-copy { font-size: 12px; color: var(--border); }
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a { font-size: 12px; color: var(--gray); text-decoration: none; transition: color 0.15s; }
+.footer-links a:hover { color: var(--black); }
+
+/* SCREENSHOT PLACEHOLDER */
+.screenshot-placeholder {
+  width: 100%; border-radius: 14px; overflow: hidden;
+  background: var(--light); border: 1px solid var(--border);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.5rem; padding: 3rem 2rem; margin: 2rem 0; text-align: center;
+}
+.sp-icon { font-size: 1.5rem; opacity: 0.4; margin-bottom: 0.3rem; }
+.sp-label { font-size: 11px; color: var(--gray); font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; }
+.sp-sub { font-size: 11px; color: var(--border); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 720px) {
+  nav { padding: 0 1.2rem; }
+  .nav-links { display: none; }
+  .glance { grid-template-columns: 1fr 1fr; padding: 2.5rem 1.5rem 1.5rem; }
+  .glance-item:nth-child(2) { border-right: none; padding-right: 0; margin-right: 0; }
+  .case { padding: 0 1.5rem; }
+  .finding-grid, .mechanic-grid, .case-grid, .error-grid, .figma-grid { grid-template-columns: 1fr; }
+  .consequence-flow { grid-template-columns: 1fr 1fr; }
+  .layer-row { grid-template-columns: 1fr; }
+  .layer-cell:not(:last-child) { border-right: none; border-bottom: 1px solid var(--border); }
+  footer { padding: 1.5rem; flex-direction: column; gap: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-name">Jasleen Gunsi</a>
+  <ul class="nav-links">
+    <li><a href="landing.html#work">Work</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Resume</a></li>
+  </ul>
+  <a href="mailto:jasleengunsi@gmail.com" class="nav-cta">Get in touch</a>
+</nav>
+
+<!-- HERO IMAGE -->
+<div class="hero-image">
+  <img src="so-hero.png" style="width:100%; height:100%; object-fit:cover; object-position:top;">
+</div>
+
+<!-- AT A GLANCE -->
+<div class="glance">
+  <div class="glance-item">
+    <div class="glance-label">Timeline</div>
+    <div class="glance-value">Oct 2025 – Present</div>
+  </div>
+  <div class="glance-item">
+    <div class="glance-label">Role</div>
+    <div class="glance-value">Research Lead & Systems Designer</div>
+  </div>
+  <div class="glance-item">
+    <div class="glance-label">Team</div>
+    <div class="glance-value">AI Game & Governance Lab, UC Davis</div>
+  </div>
+  <div class="glance-item">
+    <div class="glance-label">Status</div>
+    <div class="glance-value">In Development</div>
+  </div>
+</div>
+
+<div class="case">
+
+  <!-- LONG STORY SHORT -->
+  <div class="section">
+    <div class="section-eyebrow">Long Story Short</div>
+    <h2>AI is entering clinical settings faster than the best practices meant to guide its use.</h2>
+    <p>Guidelines exist for liability and compliance, but in practice, how clinicians actually integrate AI into their workflows is largely self-directed. Experienced practitioners have the instinct to catch when something is off. Less experienced ones are still building that instinct.</p>
+    <p>That gap is where Second Opinion lives.</p>
+    <p>Second Opinion is a <strong>browser-based simulation game</strong> where players take on the role of a Residency Director navigating a hospital floor increasingly dependent on AI-assisted clinical documentation. Players consult patients, review AI-generated notes, and make decisions whose consequences ripple forward through readmissions, memos, and policy changes.</p>
+    <p>It is not a training module. It is an orienting experience. The goal is one thing: make questioning what looks right a habit, not an afterthought.</p>
+
+    <div class="hmw">
+      <div class="hmw-icon">💭</div>
+      <div>
+        <div class="hmw-text">How might we give entry-level clinicians a space to experience the consequences of AI compliance before those consequences belong to a real patient?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE RESEARCH -->
+  <div class="section">
+    <div class="section-eyebrow">The Research</div>
+    <h2>"The AI couldn't understand the nuances of the context we actually work in"</h2>
+    <p>We interviewed practicing clinicians about how they were actually using AI, not how they thought they should, but what was happening in their day to day practice. These were the key findings:</p>
+
+    <div class="numbered-list">
+      <div class="numbered-item">
+        <div class="num-badge">Finding 01</div>
+        <div class="num-content">
+          <h3>AI misses clinical context in ways that are not obvious</h3>
+          <p>Clinicians described having to go back and correct audio summaries that looked right but were wrong in subtle ways. AI summarizing spoken consultations does not know which details are clinically significant and which are not.</p>
+          <div style="background:var(--light); border-radius:10px; padding:1rem 1.2rem; margin-top:0.8rem; border-left:2px solid var(--border);">
+            <div style="font-family:var(--serif); font-size:0.875rem; color:var(--black); line-height:1.65;">"Had to go back and edit a lot. The AI kept reading an 8-year-old patient as a 5-month-old in the audio summary. It couldn't understand the nuances of the context we actually work in."</div>
+            <div style="font-size:10px; color:var(--gray); margin-top:0.5rem; text-transform:uppercase; letter-spacing:0.08em;">Clinician interview</div>
+          </div>
+        </div>
+      </div>
+      <div class="numbered-item">
+        <div class="num-badge">Finding 02</div>
+        <div class="num-content">
+          <h3>HIPAA compliance is being navigated individually</h3>
+          <p>Clinicians described working out their own approaches to using AI within HIPAA requirements, replacing patient names and details before prompting, or having families consent to their own data being used. There is no shared protocol. Everyone is figuring it out alone.</p>
+          <div style="background:var(--light); border-radius:10px; padding:1rem 1.2rem; margin-top:0.8rem; border-left:2px solid var(--border);">
+            <div style="font-family:var(--serif); font-size:0.875rem; color:var(--black); line-height:1.65;">"We replace patient names and details before using AI. One colleague noted they were not being HIPAA compliant at all. They just did not realize it."</div>
+            <div style="font-size:10px; color:var(--gray); margin-top:0.5rem; text-transform:uppercase; letter-spacing:0.08em;">Clinician interview</div>
+          </div>
+        </div>
+      </div>
+      <div class="numbered-item">
+        <div class="num-badge">Finding 03</div>
+        <div class="num-content">
+          <h3>The experience gap is the real risk</h3>
+          <p>Experienced clinicians have enough pattern recognition to catch when something is off. Less experienced practitioners are still building that instinct. The risk is not AI replacing clinicians. It is AI misleading the ones who have not yet learned to question it.</p>
+          <div style="background:var(--light); border-radius:10px; padding:1rem 1.2rem; margin-top:0.8rem; border-left:2px solid var(--border);">
+            <div style="font-family:var(--serif); font-size:0.875rem; color:var(--black); line-height:1.65;">"Clinicians who've worked for decades might not become overreliant, but they may cause risks for less experienced clinicians."</div>
+            <div style="font-size:10px; color:var(--gray); margin-top:0.5rem; text-transform:uppercase; letter-spacing:0.08em;">Clinician interview</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top: 2rem;">Taken together, the findings pointed to a consistent pattern: AI is being used without shared protocols, it misses context in ways that are not obvious, and the practitioners most at risk are the ones still building the instincts to catch it. The problem is not awareness. It is that awareness alone does not change what happens in the moment.</p>
+  </div>
+
+  <!-- THE DESIGN PROBLEM -->
+  <div class="section">
+    <div class="section-eyebrow">The Design Problem</div>
+    <h2>You cannot learn to distrust confidence by reading about it.</h2>
+    <p>Research on automation bias is consistent: awareness of a problem does not reliably change the behavior that produces it. Knowing that AI systems can be confidently wrong does not interrupt the habit of deferring to them under time pressure. Behavioral change requires practice under the conditions that trigger the behavior, not information about those conditions.</p>
+    <p>That is what simulation offers that training modules do not. A simulation does not tell you what to do. It creates the situation where you have to decide, with something at stake if you get it wrong.</p>
+
+    <div style="display:grid; grid-template-columns: repeat(3,1fr); gap:1rem; margin-top:2rem;">
+      <div style="background:var(--black); border-radius:16px; padding:2rem 1.8rem; display:flex; flex-direction:column; gap:1rem; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.2)'" onmouseout="this.style.transform=''; this.style.boxShadow=''">
+        <div style="font-family:'DM Mono',monospace; font-size:2rem; font-weight:500; color:rgba(255,255,255,0.15); line-height:1;">01</div>
+        <div style="font-size:0.9375rem; font-weight:500; color:white; line-height:1.3;">Games create the conditions training modules cannot.</div>
+        <div style="font-size:0.825rem; color:rgba(255,255,255,0.5); line-height:1.65;">Time pressure, incomplete information, and consequences that matter. These are the conditions under which AI over-reliance becomes dangerous. A simulation replicates them. A lecture does not.</div>
+      </div>
+      <div style="background:var(--black); border-radius:16px; padding:2rem 1.8rem; display:flex; flex-direction:column; gap:1rem; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.2)'" onmouseout="this.style.transform=''; this.style.boxShadow=''">
+        <div style="font-family:'DM Mono',monospace; font-size:2rem; font-weight:500; color:rgba(255,255,255,0.15); line-height:1;">02</div>
+        <div style="font-size:0.9375rem; font-weight:500; color:white; line-height:1.3;">Entry-level practitioners are where habits form.</div>
+        <div style="font-size:0.825rem; color:rgba(255,255,255,0.5); line-height:1.65;">Experienced clinicians have decades of pattern recognition to fall back on. Entry-level practitioners are forming their clinical instincts now, before those instincts exist. An orienting experience at this stage has the most leverage.</div>
+      </div>
+      <div style="background:var(--black); border-radius:16px; padding:2rem 1.8rem; display:flex; flex-direction:column; gap:1rem; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.2)'" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.2)'" onmouseout="this.style.transform=''; this.style.boxShadow=''">
+        <div style="font-family:'DM Mono',monospace; font-size:2rem; font-weight:500; color:rgba(255,255,255,0.15); line-height:1;">03</div>
+        <div style="font-size:0.9375rem; font-weight:500; color:white; line-height:1.3;">Delayed consequences mirror real accountability.</div>
+        <div style="font-size:0.825rem; color:rgba(255,255,255,0.5); line-height:1.65;">Clinical errors do not surface immediately. A patient returns days later. A memo arrives the next morning. Designing consequences with delay mirrors how accountability actually works and makes the learning feel earned, not instructed.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE PLAYER AND THE WORLD -->
+  <div class="section">
+    <div class="section-eyebrow">The Player & The World</div>
+    <h2>The role had to carry clinical, supervisory, and institutional weight simultaneously.</h2>
+    <p>The player needed to be close enough to patient care to feel consequences personally, and senior enough to feel the institutional weight of policy decisions. A <strong>Residency Director</strong> sits exactly at that intersection.</p>
+
+    <div class="layer-table">
+      <div class="layer-row header">
+        <div class="layer-cell">Layer</div>
+        <div class="layer-cell">What the player does</div>
+        <div class="layer-cell">Why it matters</div>
+      </div>
+      <div class="layer-row">
+        <div class="layer-cell"><span class="layer-name">Clinical</span></div>
+        <div class="layer-cell layer-desc">Consults patients directly and reviews AI-generated visit notes before signing off</div>
+        <div class="layer-cell layer-desc">Maintains personal stakes even as responsibility scales. You feel it when you get it wrong.</div>
+      </div>
+      <div class="layer-row">
+        <div class="layer-cell"><span class="layer-name">Supervisory</span></div>
+        <div class="layer-cell layer-desc">Reviews residents' AI-assisted documentation for accuracy and completeness</div>
+        <div class="layer-cell layer-desc">Introduces the second-order problem: trusting that your staff has protocols to catch what AI might miss.</div>
+      </div>
+      <div class="layer-row">
+        <div class="layer-cell"><span class="layer-name">Administrative</span></div>
+        <div class="layer-cell layer-desc">Sets and responds to policy, handles memos, compliance documentation, incident reports</div>
+        <div class="layer-cell layer-desc">Makes institutional consequences feel earned rather than imposed. Decisions have weight beyond the patient room.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CORE MECHANICS -->
+  <div class="section">
+    <div class="section-eyebrow">Core Mechanics</div>
+    <h2>Every mechanic exists to create a specific kind of pressure.</h2>
+    <p>The game loop is designed so there is no obviously correct path. Every question is clinically reasonable. The tension comes from triage judgment under time pressure, not from identifying a right answer.</p>
+
+    <div class="numbered-list">
+      <div class="numbered-item">
+        <div class="num-badge">Mechanic 01</div>
+        <div class="num-content">
+          <h3>Patient conversations with a question budget</h3>
+          <p>Players consult patients through a dialogue tree but cannot ask everything. What they learn is the only firsthand knowledge they will have before reviewing the AI's version. Choosing what to pursue under time pressure is the core skill, and there is no obviously correct path.</p>
+        </div>
+      </div>
+      <div class="numbered-item">
+        <div class="num-badge">Mechanic 02</div>
+        <div class="num-content">
+          <h3>AI note review: accept, edit, or override</h3>
+          <p>After the conversation, players see the AI-generated visit note alongside a confidence score. The note is usually accurate. Occasionally it contains a subtle error that only careful reading catches. Each choice has resource and time implications.</p>
+        </div>
+      </div>
+      <div class="numbered-item">
+        <div class="num-badge">Mechanic 03</div>
+        <div class="num-content">
+          <h3>Resource decisions with real costs</h3>
+          <p>Tests consume budget. Observation beds block capacity for other patients. Unnecessary orders may trigger a Chief intervention. Every clinical decision has a cost, which is what makes the question of when to trust the AI a genuine dilemma, not an obvious one.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE DESIGN -->
+  <div class="section">
+    <div class="section-eyebrow">Case Design</div>
+    <h2>Every case was designed to teach something.</h2>
+    <p>Every case targets a specific failure mode that AI systems actually exhibit in practice. The difficulty is not arbitrary. The error typology came directly from what clinicians told us, mapped onto the three ways AI tends to mislead rather than obviously fail.</p>
+
+    <!-- ERROR TYPOLOGY -->
+    <div class="error-grid">
+      <div class="error-card">
+        <div class="error-label">Confident Hedge</div>
+        <h3>Correct but incomplete</h3>
+        <p>AI gets the main diagnosis right but buries a critical risk as an afterthought. Sounds thorough. Misses what matters.</p>
+      </div>
+      <div class="error-card">
+        <div class="error-label">Omission</div>
+        <h3>Correct given what it knew</h3>
+        <p>AI is not wrong. It just doesn't know what wasn't asked. The error is in what the system didn't prompt for, not what it said.</p>
+      </div>
+      <div class="error-card">
+        <div class="error-label">Anchoring</div>
+        <h3>Confidently wrong</h3>
+        <p>AI anchors to a plausible diagnosis and actively explains away contradicting signals. The note sounds complete and confident. It isn't.</p>
+      </div>
+    </div>
+
+    <!-- FEATURED CASES -->
+    <p style="margin-top:2.5rem; margin-bottom:0;">One orienting case. One trap.</p>
+
+    <div class="case-grid" style="margin-top:1rem;">
+      <div class="case-card">
+        <div class="case-card-header" style="display:flex; flex-direction:column; gap:0.8rem; padding: 1.4rem 1.6rem;">
+          <div style="display:flex; align-items:center; gap:0.9rem;">
+            <!-- Avatar left -->
+            <div style="width:44px; height:44px; border-radius:50%; background:#5B8DB8; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <span style="font-size:14px; font-weight:500; color:white; letter-spacing:0.04em;">AS</span>
+            </div>
+            <div>
+              <div class="case-patient">Alexander Smoots</div>
+              <div class="case-patient-sub">Male, 27 · Compromised immune system</div>
+            </div>
+            <div class="case-confidence" style="margin-left:auto;">91% confidence</div>
+          </div>
+        </div>
+        <div class="case-card-body">
+          <div class="case-error-type">Confident Hedge</div>
+          <h3>The nurse note mechanic</h3>
+          <p>Before this case opens, a nurse note arrives in the inbox: "Mr. Smoots mentioned he hasn't had a tetanus shot in years when I was taking his vitals." The player decides when to read it. The AI note buries the tetanus risk as an afterthought. The player has to actively connect the nurse's observation to the note and order the vaccine.</p>
+          <div class="case-consequence"><strong>If missed:</strong> Smoots returns in week 2 with early tetanus symptoms. Seeds the consequence system.</div>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-card-header" style="display:flex; flex-direction:column; gap:0.8rem; padding: 1.4rem 1.6rem;">
+          <div style="display:flex; align-items:center; gap:0.9rem;">
+            <div style="width:44px; height:44px; border-radius:50%; background:#E07B5A; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <span style="font-size:14px; font-weight:500; color:white; letter-spacing:0.04em;">BH</span>
+            </div>
+            <div>
+              <div class="case-patient">Bartholomew Hasselbach</div>
+              <div class="case-patient-sub">Male, 20 · No prior conditions</div>
+            </div>
+            <div class="case-confidence" style="margin-left:auto;">94% confidence</div>
+          </div>
+        </div>
+        <div class="case-card-body">
+          <div class="case-error-type">Anchoring: Trap Case</div>
+          <h3>The highest-stakes case in the demo</h3>
+          <p>AI calls bronchitis at 94% confidence. Dismisses cardiac risk because of patient age. HR 102 explained away. No nurse note. No guidance. The note sounds complete and reasonable. The player is entirely on their own. HR 102 with exertional shortness of breath in a 20-year-old warrants cardiac workup. The AI does not see it.</p>
+          <div class="case-consequence"><strong>If accepted:</strong> Bartholomew readmitted week 2, myocarditis confirmed, condition worsened. The demo's gut-punch moment.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONSEQUENCE SYSTEM -->
+  <div class="section">
+    <div class="section-eyebrow">The Consequence System</div>
+    <h2>Decisions don't resolve immediately. They come back.</h2>
+    <p>Real clinical accountability doesn't arrive in the moment. A patient returns days later. A memo arrives the next morning. A policy change is triggered by a pattern of decisions across cases. The consequence system was designed to mirror that timeline and to make the learning feel like something that happened to you, not something you were told.</p>
+
+    <div style="display:flex; align-items:center; gap:12px; margin: 2.5rem 0 0.5rem;">
+      <span style="font-size:10px; font-weight:500; color:var(--gray); text-transform:uppercase; letter-spacing:0.14em;">Demo Structure</span>
+      <div style="flex:1; height:1px; background:var(--border);"></div>
+    </div>
+
+    <div class="consequence-flow">
+      <div class="consequence-step">
+        <div class="consequence-step-num">Day 1</div>
+        <h3>Decision made</h3>
+        <p>Player accepts, edits, or overrides the AI note. Clinical resources allocated. Case signed off.</p>
+      </div>
+      <div class="consequence-step">
+        <div class="consequence-step-num">Same day</div>
+        <h3>Quiet signal</h3>
+        <p>A lab result. A routine follow-up. Something that doesn't demand attention but rewards the player who notices.</p>
+      </div>
+      <div class="consequence-step">
+        <div class="consequence-step-num">Day 2</div>
+        <h3>Consequence surfaces</h3>
+        <p>Readmission alert. Memo from the Chief. An incident report. The connection to the earlier decision is traceable, but the player has to make it.</p>
+      </div>
+      <div class="consequence-step">
+        <div class="consequence-step-num">Ongoing</div>
+        <h3>Pattern emerges</h3>
+        <p>Policy changes. Audit flags. Institutional responses to patterns across cases. Decisions accumulate into a record the player has to answer for.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:1.5rem;">The Richard Radford case is the demo's clearest example. He presents with food poisoning on Day 1. AI is technically correct. A detailed player orders an ECG given his cardiac risk profile. Most don't. End of Day 2: alert fires. Radford is back in the ER with chest pain. If the ECG was ordered, it was caught early. If not, a cardiac event is developing. The gut-punch moment the demo is built toward.</p>
+  </div>
+
+  <!-- FIGMA SCREENS -->
+  <div class="section" id="screens">
+    <div class="section-eyebrow">Design Screens</div>
+    <h2>Familiarity by design. Discomfort by intention.</h2>
+    <p>The interface is designed to feel like a real hospital system, not a game. The visual language is clinical and restrained. The AI confidence score is always visible but never the loudest element on the page. The player has to choose to look at it carefully.</p>
+
+    <div class="figma-grid">
+      <div class="figma-slot">
+        <div class="figma-img">
+          <img src="so-screen-home.png" style="width:100%; height:100%; object-fit:contain; border-radius:14px;">
+        </div>
+        <div class="figma-annotation">
+          <h3>The world before a case opens</h3>
+          <p>The queue and message panel sit side by side. Clinical cases on the left, communications on the right. The split is intentional. Critical context can arrive through either channel, and deciding when to check messages is itself a decision the player has to make.</p>
+        </div>
+      </div>
+      <div class="figma-slot">
+        <div class="figma-img">
+          <img src="so-screen-patient.png" style="width:100%; height:100%; object-fit:contain; border-radius:14px;">
+        </div>
+        <div class="figma-annotation">
+          <h3>Where the tension lives</h3>
+          <p>Patient intake on the left, AI-generated note on the right. The layout does not tell the player which to trust. The confidence score is visible but not prominent. Accept and Sign sits alongside Override with equal visual weight. The interface withholds judgment on purpose.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHERE IT STANDS -->
+  <div class="section">
+    <div class="section-eyebrow">Where It Stands</div>
+    <h2>The design is solid. The build is evolving.</h2>
+    <p>Second Opinion is actively in development. The current build is exploring a simplified version of the case system, focused on healthcare students practicing AI trust calibration through symptom-based cases. The full consequence system and institutional layer described in this case study represent the design vision, some of which will ship in later iterations.</p>
+
+    <div class="status-card">
+      <div class="status-icon">🔬</div>
+      <div class="status-text">
+        <h3>Also part of ongoing research at UC Davis</h3>
+        <p>This project is developed in collaboration with the AI Game and Governance Lab at UC Davis. The simulation framework is being explored as a research tool for studying how clinicians make decisions when AI is involved. Insights that can help shape policy, guidelines, and future training.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEARNINGS -->
+  <div class="section">
+    <div class="section-eyebrow">Learnings</div>
+    <h2>What this project taught me about designing for behavior change.</h2>
+
+    <ul class="learnings-list">
+      <li class="learning">
+        <div class="learning-icon">🧠</div>
+        <div>
+          <h3>Designing for behavior change is harder than designing for information transfer.</h3>
+          <p>A training module tells people what to do. A simulation has to create the conditions where they figure it out themselves and feel the consequences. That's a different design problem entirely, and it requires understanding the psychology of decision-making under pressure, not just the content you want to teach.</p>
+        </div>
+      </li>
+      <li class="learning">
+        <div class="learning-icon">📋</div>
+        <div>
+          <h3>Primary research is what makes ambitious design defensible.</h3>
+          <p>We aren't clinicians. But we talked to ones who are. Every major design decision in this project traces back to something a physician told us: the experience gap, the confident contextual errors, the absence of training. Without that foundation, the design is just speculation.</p>
+        </div>
+      </li>
+      <li class="learning">
+        <div class="learning-icon">🔄</div>
+        <div>
+          <h3>Scope is a research finding, not a failure.</h3>
+          <p>The original vision was ambitious. The build that's shipping is simpler. That's not a compromise. It is what we learned about what's actually buildable and what's most useful to the people we're designing for. Knowing when to simplify is as important as knowing what to build.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- NEXT UP -->
+  <div class="next-section">
+    <div class="section-eyebrow">Next Up…</div>
+    <div class="next-cards">
+      <a href="aic-case-study.html" class="next-card">
+        <div class="next-thumb">
+          <div class="next-thumb-glyph">📊</div>
+          <div class="next-thumb-label">UX Research & Product · 2024</div>
+        </div>
+        <div class="next-body">
+          <div class="next-title">AISC Feedback Intelligence</div>
+          <div class="next-desc">Built the research infrastructure and AI tool that gave a student org visibility into its own membership for the first time</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- SIGN OFF -->
+<div class="signoff" style="max-width:1040px; margin: 0 auto; padding: 4rem 3rem 2rem;">
+  <p>Glad we could cross paths.<br>I hope it left you with a bit of curiosity.</p>
+</div>
+
+<footer>
+  <span class="footer-copy">© Jasleen Gunsi 2026</span>
+  <div class="footer-links">
+    <a href="mailto:jasleengunsi@gmail.com">Email</a>
+    <a href="https://linkedin.com/in/jasleen-gunsi">LinkedIn</a>
+    <a href="#">Resume</a>
+  </div>
+</footer>
+
+<script>
+const tiltCards = document.querySelectorAll(
+  '.finding-card, .mechanic-card, .case-card, .error-card, .status-card'
+);
+tiltCards.forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+    const tiltX = ((y - cy) / cy) * 3;
+    const tiltY = ((cx - x) / cx) * 3;
+    card.style.transform = `translateY(-3px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+    card.style.transition = 'transform 0.1s ease, box-shadow 0.3s ease';
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+    card.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease';
+  });
+});
+</script>
+
+</body>
+</html>

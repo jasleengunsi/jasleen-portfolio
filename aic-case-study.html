@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIC Event Feedback Intelligence — Jasleen Gunsi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black: #1d1d1f;
+  --white: #ffffff;
+  --gray: #6e6e73;
+  --light: #f5f5f7;
+  --border: #d2d2d7;
+  --blue: #0071e3;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  background: var(--white);
+  color: var(--black);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  height: 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem;
+}
+.nav-name { font-size: 14px; font-weight: 500; color: var(--black); text-decoration: none; letter-spacing: -0.01em; }
+.nav-links { display: flex; gap: 1.8rem; list-style: none; }
+.nav-links a { font-size: 13px; color: var(--black); text-decoration: none; opacity: 0.55; transition: opacity 0.15s; }
+.nav-links a:hover { opacity: 1; }
+.nav-cta { font-size: 13px; color: var(--blue); text-decoration: none; transition: opacity 0.15s; }
+.nav-cta:hover { opacity: 0.75; }
+
+/* HERO IMAGE PLACEHOLDER */
+.hero-image {
+  margin-top: 48px;
+  width: 100%; aspect-ratio: 16/6;
+  background: #0a0e0a;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.hero-image-inner {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, #0a0e0a 0%, #0d1f14 60%, #091810 100%);
+  display: flex; align-items: center; justify-content: center;
+  gap: 20px; padding: 2.5rem;
+}
+.hero-glow {
+  position: absolute; width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(99,179,237,0.07) 0%, transparent 70%);
+  top: -150px; right: -100px; pointer-events: none;
+}
+.hero-mock {
+  width: 280px; background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; overflow: hidden;
+}
+.hm-bar {
+  background: rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.07);
+  padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;
+}
+.hm-bar-l { font-size: 8px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.1em; }
+.hm-bar-v { font-size: 9px; font-weight: 500; color: #68d391; }
+.hm-body { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.hm-stats { display: flex; gap: 7px; }
+.hm-stat { flex: 1; background: rgba(255,255,255,0.05); border-radius: 7px; padding: 8px 9px; }
+.hm-stat-n { font-size: 1rem; font-weight: 500; color: #63b3ed; }
+.hm-stat-l { font-size: 7px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 1px; }
+.hm-bars { display: flex; flex-direction: column; gap: 5px; }
+.hm-brow { display: flex; justify-content: space-between; margin-bottom: 2px; }
+.hm-bname { font-size: 8px; color: rgba(255,255,255,0.35); }
+.hm-track { background: rgba(255,255,255,0.08); border-radius: 2px; height: 3px; }
+.hm-fill { height: 3px; border-radius: 2px; background: #63b3ed; }
+.hm-insight { background: rgba(104,211,145,0.08); border: 1px solid rgba(104,211,145,0.15); border-radius: 7px; padding: 7px 9px; font-size: 8px; color: rgba(255,255,255,0.45); line-height: 1.5; }
+
+.hero-mock-right {
+  width: 220px; background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; overflow: hidden;
+  align-self: flex-start; margin-top: 30px;
+}
+.hero-placeholder-label {
+  position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+  font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 0.1em;
+  text-transform: uppercase; white-space: nowrap;
+}
+
+/* AT A GLANCE */
+.glance {
+  max-width: 1040px; margin: 0 auto;
+  padding: 4.5rem 3rem 1.5rem;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  /*border-bottom: 1px solid var(--border);*/
+}
+.glance-item { padding: 0 0 0 0; }
+.glance-item:not(:last-child) { border-right: 1px solid var(--border); padding-right: 2.5rem; margin-right: 2.5rem; }
+.glance-label { font-size: 10px; font-weight: 500; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+.glance-value { font-size: 0.875rem; color: var(--black); line-height: 1.5; font-weight: 400; }
+
+/* MAIN CONTENT */
+.case { max-width: 1040px; margin: 0 auto; padding: 0 3rem; }
+
+/* SECTION HEADERS — Brandon style all-caps with line */
+.section-eyebrow {
+  font-size: 10px; font-weight: 500; color: var(--gray);
+  text-transform: uppercase; letter-spacing: 0.14em;
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 1.8rem;
+}
+.section-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.section { padding: 5rem 0; border-bottom: 1px solid var(--border); }
+.section:last-of-type { border-bottom: none; }
+
+.section h2 {
+  font-family: var(--serif); font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 400; line-height: 1.15; letter-spacing: -0.02em;
+  margin-bottom: 1.2rem; max-width: 780px;
+}
+.section p {
+  font-size: 0.9375rem; color: var(--gray); line-height: 1.75;
+  max-width: 680px; margin-bottom: 1rem; font-weight: 300;
+}
+.section p strong { color: var(--black); font-weight: 500; }
+
+/* NUMBERED ACCOMPLISHMENTS */
+.numbered-list { display: flex; flex-direction: column; gap: 0; margin: 2.5rem 0; }
+.numbered-item {
+  display: flex; gap: 1.5rem; align-items: flex-start;
+  padding: 1.4rem 0; border-bottom: 1px solid var(--border);
+}
+.numbered-item:first-child { border-top: 1px solid var(--border); }
+.num-badge {
+  font-size: 11px; font-weight: 500; color: var(--gray);
+  background: var(--light); border-radius: 6px; padding: 3px 8px;
+  flex-shrink: 0; margin-top: 1px; letter-spacing: 0.02em;
+}
+.num-content h3 { font-size: 0.9375rem; font-weight: 500; margin-bottom: 0.25rem; }
+.num-content p { font-size: 0.875rem; color: var(--gray); margin-bottom: 0; max-width: 100%; line-height: 1.6; }
+.metric-chip {
+  display: inline-flex; align-items: center;
+  margin-top: 0.7rem;
+  font-size: 10px; font-weight: 500; color: white;
+  background: var(--gray); border: 1px solid var(--gray);
+  padding: 3px 10px; border-radius: 100px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+
+/* TIER CARDS */
+.tier-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1rem; margin: 2rem 0;
+}
+.tier-card {
+  background: var(--light); border-radius: 16px;
+  padding: 1.8rem 2rem;
+  display: flex; flex-direction: column; gap: 0.8rem;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  will-change: transform;
+}
+.tier-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+.tier-badge {
+  display: inline-block; font-size: 11px; font-weight: 500;
+  color: white; background: var(--black);
+  border: 1px solid var(--black);
+  padding: 4px 12px; border-radius: 100px;
+  letter-spacing: 0.04em; width: fit-content;
+}
+.tier-card h3 {
+  font-size: 0.9375rem; font-weight: 500;
+  color: var(--black); line-height: 1.3;
+}
+.tier-card p {
+  font-size: 0.85rem; color: var(--gray);
+  line-height: 1.65; margin-bottom: 0; max-width: 100%;
+}
+
+/* SURVEY CARDS */
+.survey-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1rem; margin: 2rem 0;
+}
+.survey-card {
+  background: var(--light); border-radius: 16px;
+  padding: 1.6rem 1.8rem;
+  display: flex; flex-direction: column; gap: 0.6rem;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  will-change: transform;
+}
+.survey-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+.survey-card-top {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 0.8rem;
+}
+.survey-card h3 {
+  font-size: 0.9rem; font-weight: 500; color: var(--black); line-height: 1.3;
+}
+.survey-format {
+  display: inline-block; font-size: 10px; font-weight: 500;
+  color: var(--gray); background: white;
+  border: 1px solid var(--border);
+  padding: 3px 10px; border-radius: 100px;
+  letter-spacing: 0.03em; white-space: nowrap; flex-shrink: 0;
+}
+.survey-card p {
+  font-size: 0.85rem; color: var(--gray); line-height: 1.65;
+  margin-bottom: 0; max-width: 100%;
+}
+.hmw {
+  background: var(--light); border-radius: 16px;
+  padding: 2rem 2.2rem; margin: 2.5rem 0;
+  display: flex; gap: 1rem; align-items: flex-start;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.hmw:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+.hmw-icon { font-size: 1.2rem; flex-shrink: 0; }
+.hmw-text {
+  font-family: var(--serif);
+  font-size: 1.1rem; color: var(--black); line-height: 1.6;
+}
+
+/* USER QUOTES — Brandon style */
+.quotes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2.5rem; }
+.quote-card {
+  background: var(--light); border-radius: 14px; padding: 1.6rem 1.8rem;
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.quote-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+.quote-mark { font-family: var(--serif); font-size: 3rem; color: var(--border); line-height: 1; margin-bottom: 0.5rem; }
+.quote-text { font-family: var(--serif); font-size: 0.9375rem; color: var(--black); line-height: 1.6; margin-bottom: 1rem; }
+.quote-source { font-size: 11px; color: var(--gray); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* OPPORTUNITIES GRID */
+.opps-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2.5rem; }
+.opp-card {
+  background: var(--light); border-radius: 14px; padding: 1.6rem 1.8rem;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.opp-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+.opp-icon { font-size: 1.4rem; margin-bottom: 0.8rem; }
+.opp-card h3 { font-size: 0.9375rem; font-weight: 500; margin-bottom: 0.4rem; }
+.opp-card p { font-size: 0.875rem; color: var(--gray); line-height: 1.6; margin-bottom: 0; max-width: 100%; }
+
+/* BEFORE/AFTER */
+.ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2.5rem; }
+.ba-card { border-radius: 14px; padding: 1.8rem 2rem; }
+.ba-card.before { background: var(--light); }
+.ba-card.after { background: var(--black); }
+.ba-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.2rem; }
+.ba-card.before .ba-label { color: var(--gray); }
+.ba-card.after .ba-label { color: rgba(255,255,255,0.35); }
+.ba-step { display: flex; gap: 0.8rem; align-items: flex-start; margin-bottom: 0.9rem; }
+.ba-num {
+  font-size: 10px; padding: 2px 7px; border-radius: 100px;
+  flex-shrink: 0; margin-top: 2px; font-weight: 500;
+}
+.ba-card.before .ba-num { background: var(--border); color: var(--gray); }
+.ba-card.after .ba-num { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); }
+.ba-step-text { font-size: 0.875rem; line-height: 1.55; }
+.ba-card.before .ba-step-text { color: var(--gray); }
+.ba-card.after .ba-step-text { color: rgba(255,255,255,0.6); }
+.ba-card.after .ba-step-text strong { color: rgba(255,255,255,0.9); }
+
+/* SCREENSHOT PLACEHOLDER */
+.screenshot-placeholder {
+  width: 100%; border-radius: 14px; overflow: hidden;
+  background: var(--light); border: 1px solid var(--border);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.5rem; padding: 3rem 2rem; margin: 2rem 0;
+  text-align: center;
+}
+.sp-label {
+  font-size: 11px; color: var(--gray); font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+.sp-sub { font-size: 11px; color: var(--border); }
+.sp-icon { font-size: 1.5rem; opacity: 0.4; margin-bottom: 0.3rem; }
+
+/* IMPACT STATS */
+.impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2.5rem; }
+.impact-card {
+  background: var(--light); border-radius: 14px; padding: 1.8rem 2rem;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.impact-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+.impact-num { font-size: 2.2rem; font-weight: 500; color: var(--black); letter-spacing: -0.03em; line-height: 1; margin-bottom: 0.4rem; }
+.impact-desc { font-size: 0.875rem; color: var(--gray); line-height: 1.5; }
+
+/* LEARNINGS */
+.learnings-list { display: flex; flex-direction: column; gap: 0; margin-top: 2.5rem; }
+.learning {
+  display: flex; gap: 1.2rem; align-items: flex-start;
+  padding: 1.5rem 0; border-bottom: 1px solid var(--border);
+}
+.learning:first-child { border-top: 1px solid var(--border); }
+.learning-icon {
+  width: 34px; height: 34px; border-radius: 8px; background: var(--light);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; flex-shrink: 0;
+}
+.learning h3 { font-size: 0.9375rem; font-weight: 500; margin-bottom: 0.25rem; }
+.learning p { font-size: 0.875rem; color: var(--gray); line-height: 1.65; margin-bottom: 0; max-width: 580px; }
+
+/* NEXT UP */
+.next-section { padding: 5rem 0 2rem; }
+.next-cards { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.5rem; max-width: 400px; }
+.next-card {
+  background: var(--light); border-radius: 16px; overflow: hidden;
+  text-decoration: none; color: var(--black);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.next-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+}
+.next-thumb { height: 140px; position: relative; overflow: hidden; }
+.next-thumb-so { background: linear-gradient(135deg, #080d08, #0d1a10); }
+.next-thumb-pantryfan { background: linear-gradient(135deg, #0a1628, #1a2840); }
+.next-thumb-label {
+  position: absolute; bottom: 1rem; left: 1.2rem;
+  font-size: 10px; color: rgba(255,255,255,0.3);
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+.next-thumb-glyph {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -60%); font-size: 2rem; opacity: 0.12;
+}
+.next-body { padding: 1.2rem 1.4rem; }
+.next-title { font-size: 0.9375rem; font-weight: 500; margin-bottom: 0.25rem; }
+.next-desc { font-size: 0.8125rem; color: var(--gray); }
+
+/* SIGN OFF */
+.signoff {
+  padding: 4rem 0 2rem; text-align: center;
+  border-top: 1px solid var(--border); margin-top: 2rem;
+}
+.signoff p { font-family: var(--serif); font-style: italic; font-size: 1.05rem; color: var(--gray); line-height: 1.8; }
+
+/* FOOTER */
+footer {
+  max-width: 1040px; margin: 0 auto;
+  padding: 1.5rem 3rem;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid var(--border);
+}
+.footer-copy { font-size: 12px; color: var(--border); }
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a { font-size: 12px; color: var(--gray); text-decoration: none; transition: color 0.15s; }
+.footer-links a:hover { color: var(--black); }
+
+/* ANIM */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 720px) {
+  nav { padding: 0 1.2rem; }
+  .nav-links { display: none; }
+  .glance { grid-template-columns: 1fr 1fr; padding: 2.5rem 1.5rem; }
+  .glance-item:nth-child(2) { border-right: none; padding-right: 0; margin-right: 0; }
+  .case { padding: 0 1.5rem; }
+  .quotes-grid, .opps-grid, .ba-grid, .next-cards, .impact-grid, .tier-grid, .survey-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-name">Jasleen Gunsi</a>
+  <ul class="nav-links">
+    <li><a href="landing.html#work">Work</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Resume</a></li>
+  </ul>
+  <a href="mailto:jasleengunsi@gmail.com" class="nav-cta">Get in touch</a>
+</nav>
+
+<!-- HERO IMAGE -->
+<div class="hero-image">
+  <img src="case-study.png" style="width:100%; height:100%; object-fit:cover; object-position:top;">
+</div>
+
+<!-- AT A GLANCE -->
+<div class="glance">
+  <div class="glance-item">
+    <div class="glance-label">Timeline</div>
+    <div class="glance-value">Oct 2024 – Jun 2026</div>
+  </div>
+  <div class="glance-item">
+    <div class="glance-label">Role</div>
+    <div class="glance-value">UX Research Director & Sole Developer</div>
+  </div>
+  <div class="glance-item">
+    <div class="glance-label">Team</div>
+    <div class="glance-value">Grew from 3 to 8 members </div>
+  </div>
+  <div class="glance-item">
+    <div class="glance-label">Tools</div>
+    <div class="glance-value">Figma · Claude API · React · Vercel</div>
+  </div>
+</div>
+
+<!-- JUMP TO TOOL -->
+<div style="max-width:1040px; margin: 0 auto; padding: 1.5rem 3rem 0; display:flex; justify-content:flex-start;">
+  <a href="#tool" style="
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--black); color: white;
+    font-size: 13px; font-weight: 400; letter-spacing: -0.01em;
+    padding: 9px 20px; border-radius: 980px;
+    text-decoration: none;
+    transition: background 0.15s;
+  " onmouseover="this.style.background='#3a3a3c'" onmouseout="this.style.background='#1d1d1f'">
+    Jump to the tool ↓
+  </a>
+</div>
+
+<div class="case">
+
+  <!-- LONG STORY SHORT -->
+  <div class="section">
+    <div class="section-eyebrow">Long Story Short</div>
+    <h2>I built the missing research infrastructure, and then shipped the tool to make it useful</h2>
+    <p>I grew from research associate to leading the UX team within my first year at The AI Collective, an org that runs 6–7 events per quarter, serving anywhere from 20 to 300 people. The problem was that leadership had no info on who these people were, what brought them to events, and if the org was growing at all.</p>
+    <p>So I built the system to change that. My key contributions:</p>
+
+    <div class="numbered-list">
+      <div class="numbered-item">
+        <div class="num-badge">01</div>
+        <div class="num-content">
+          <h3>Research & System Design</h3>
+          <p>Defined the member hierarchy, scoped the metric framework, and designed the survey instrumentation from scratch, creating the first consistent data system the org ever had.</p>
+        </div>
+      </div>
+      <div class="numbered-item">
+        <div class="num-badge">02</div>
+        <div class="num-content">
+          <h3>Stakeholder Research & Synthesis</h3>
+          <p>Interviewed leadership and event leads to map their distinct needs, synthesized qualitative and quantitative responses across every event, and presented findings to a 40-person leadership board for a years worth of events.</p>
+        </div>
+      </div>
+      <div class="numbered-item">
+        <div class="num-badge">03</div>
+        <div class="num-content">
+          <h3>Shipped a Live Product</h3>
+         <p>Identified the analysis bottleneck, scoped and built the AI feedback tool solo, and deployed it on Vercel, replacing hours of manual review with instant structured summaries. Live at <a href="https://aic-events.vercel.app" target="_blank" style="color: var(--blue); text-decoration: none;">aic-events.vercel.app</a>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="hmw">
+      <div class="hmw-icon">💭</div>
+      <div class="hmw-text">How might we give a volunteer-run student org the same quality of organizational intelligence a funded team would have, without adding any overhead?</div>
+    </div>
+  </div>
+
+  <!-- UNDERSTANDING THE ORG -->
+  <div class="section">
+    <div class="section-eyebrow">Understanding the Org</div>
+    <h2>Before designing a survey, I had to define who a member even was.</h2>
+    <p>We had no formal definition of membership: a first-time attendee and a year-long division lead were both "members." Without drawing clear lines, any data we collected would be meaningless.</p>
+    <p>After interviewing key leadership, we established three distinct tiers: </p>
+
+    <div class="tier-grid">
+      <div class="tier-card">
+        <div class="tier-badge">Board</div>
+        <h3>Leadership Team & Year-Long Project Leads</h3>
+        <p>Responsible for org strategy and event programming. Their high buy-in posed a bias risk for honest event satisfaction data, instead their responses could be a reliable internal measure of leadership engagement and org health over time.</p>
+      </div>
+      <div class="tier-card">
+        <div class="tier-badge">Associates</div>
+        <h3>Quarter-Long Project Leads & Division Members</h3>
+        <p>Committed members with ongoing roles inside AIC divisions for the quarter. More invested than general attendees, but rotating each quarter, making their feedback a key signal for whether members are choosing to re-engage and potential involvement pipelines.</p>
+      </div>
+      <div class="tier-card">
+        <div class="tier-badge">General Members</div>
+        <h3>Event Attendees & Quarter-Long Project Members</h3>
+        <p>The most numerous and most invisible group. Most important group to measure: <strong>reach</strong> (are we growing beyond our core?), <strong>inclusivity</strong> (are we attracting people from different backgrounds and skill levels?), and <strong>accessibility</strong> (are our events actually open to first timers?).</p>
+      </div>
+    </div>
+
+    <p>This hierarchy became the backbone of the entire system. It informed which survey questions to ask, which metrics to prioritize, and how to filter the data. It also clarified something important: AIC has no static roster, membership is defined by showing up, <strong>which made event-level data our most informative unit of analysis.</strong></p>
+
+  <!-- SURVEY DESIGN -->
+  <div class="section">
+    <div class="section-eyebrow">Survey Design</div>
+    <h2>Every question had to earn its place.</h2>
+    <p>Designing the survey meant balancing three competing pressures: data quality, respondent comfort, and actionability. AIC is a volunteer org with no incentive budget beyond food. Attendees wanted to feel heard, not interrogated. Every question had to justify itself.</p>
+    <p>I chose Google Forms, free, QR-accessible, no login required, and it fed directly into our Google Drive ecosystem. Then I worked through each question with a clear rationale:</p>
+
+    <div class="survey-grid">
+      <div class="survey-card">
+        <div class="survey-card-top">
+          <h3>Name & Email</h3>
+          <span class="survey-format">Optional fill-in</span>
+        </div>
+        <p>Allows longitudinal tracking and response validation while giving respondents some leeway to be anonymous if desired, unlike requiring logging-in.</p>
+      </div>
+      <div class="survey-card">
+        <div class="survey-card-top">
+          <h3>Year</h3>
+          <span class="survey-format">Multiple choice</span>
+        </div>
+        <p>Included "5th year+," "Grad Student," and "Other" with a fill-in. Non-traditional students aren't erased from the data while keeping it quick.</p>
+      </div>
+      <div class="survey-card">
+        <div class="survey-card-top">
+          <h3>Major & Minor</h3>
+          <span class="survey-format">Dropdown</span>
+        </div>
+        <p>Started as free-response but analysis was inconsistent and cross-event comparison was impossible. Instead used the official UC Davis major list to keep it standardized.</p>
+      </div>
+      <div class="survey-card">
+        <div class="survey-card-top">
+          <h3>AIC Involvement</h3>
+          <span class="survey-format">Multiple choice</span>
+        </div>
+        <p>Enabled retention tracking and engagement-level segmentation. Allows us to filter by the membership tiers defined earlier and pay attention to specific metrics per group.</p>
+      </div>
+      <div class="survey-card">
+        <div class="survey-card-top">
+          <h3>Event Satisfaction</h3>
+          <span class="survey-format">1–10 scale</span>
+        </div>
+        <p>Clean quantitative baseline. Comparable across every event and member group over time. Simple enough that respondents didn't overthink it.</p>
+      </div>
+      <div class="survey-card">
+        <div class="survey-card-top">
+          <h3>Open-Ended Feedback</h3>
+          <span class="survey-format">Optional text</span>
+        </div>
+        <p>Kept optional to reduce survey fatigue. Still captures qualitative signal from the most engaged respondents, the people who have something specific to say will say it.</p>
+      </div>
+    </div>
+
+
+    <p style="margin-top:1.5rem;">One more thing that made a real difference: <strong>timing.</strong> </p>
+    <p>Early response rates were low because surveys competed with people packing up and leaving. Moving distribution to mid-event, before food service or even sometimes required for food, turned completion into a natural part of the event flow. Response rates became consistent across every event after that.</p>
+  </div>
+
+  <!-- OPPORTUNITIES -->
+  <div class="section">
+    <div class="section-eyebrow">Data Analysis</div>
+    <h2>Four metric categories that actually answered leadership's questions</h2>
+    <p>With the hierarchy established, three questions anchored every metric: <strong>Are we actually growing beyond our core?</strong> <strong>Are we serving all member types equally?</strong> and <strong>Are the people we think we're reaching actually showing up?</strong> Four categories emerged.</p>
+
+    <div class="opps-grid">
+      <div class="opp-card">
+        <div class="opp-icon">📊</div>
+        <h3>Attendance & Participation</h3>
+        <p>Total attendees, repeat rate, new vs. returning ratio. Tracked whether the org was growing reach or serving the same core group.</p>
+      </div>
+      <div class="opp-card">
+        <div class="opp-icon">👥</div>
+        <h3>Member Demographics</h3>
+        <p>Role, year, major, technical skill level. Gave context to who was in the room and whether AIC was reaching beyond its immediate community.</p>
+      </div>
+      <div class="opp-card">
+        <div class="opp-icon">⭐</div>
+        <h3>Engagement & Satisfaction</h3>
+        <p>1–10 satisfaction score, post-event confidence, open-ended feedback. Measured perceived value and surfaced specific improvements.</p>
+      </div>
+      <div class="opp-card">
+        <div class="opp-icon">📣</div>
+        <h3>Marketing Effectiveness</h3>
+        <p>How attendees heard about the event. Connected outreach efforts to actual attendance, identifying which channels were working.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EARLY CONCEPT / PIVOT -->
+  <div class="section">
+    <div class="section-eyebrow">The Pivot</div>
+    <h2>The data was working. The analysis layer wasn't.</h2>
+    <p>After every event, someone on the UX team had to manually read through 50+ responses, pull themes, calculate satisfaction scores, and put together a full slide deck. We could do event-level analysis and quarter-level summaries but each one took hours and landed a week late. <a href="https://docs.google.com/presentation/d/1jXCgEQPlcP_DGOeb-ij_DjfW9_YNKI26sNAq4fsjSfg/edit?usp=sharing" target="_blank" style="color: var(--blue); text-decoration: none;">View Winter Quarter Presentation →</a></p>
+    <p>The insights existed. They just weren't accessible in time to matter.</p>
+    <p>The real bottleneck wasn't the data. It was the analysis layer between the data and the decision. <strong>If I could automate that layer with AI, leadership could go from raw CSV export to structured insights in minutes, no manual review, no delay.</strong></p>
+
+    <div class="ba-grid">
+      <div class="ba-card before">
+        <div class="ba-label">Before — Manual Process</div>
+        <div class="ba-step"><div class="ba-num">1</div><div class="ba-step-text">Export CSV from Google Sheets after event</div></div>
+        <div class="ba-step"><div class="ba-num">2</div><div class="ba-step-text">UX team manually reads 50+ responses</div></div>
+        <div class="ba-step"><div class="ba-num">3</div><div class="ba-step-text">Pull qualitative themes by hand — hours of work</div></div>
+        <div class="ba-step"><div class="ba-num">4</div><div class="ba-step-text">Write summary, share with leadership a week later</div></div>
+      </div>
+      <div class="ba-card after">
+        <div class="ba-label">After — AI Feedback Tool</div>
+        <div class="ba-step"><div class="ba-num">1</div><div class="ba-step-text"><strong>Upload CSV</strong> to the web app</div></div>
+        <div class="ba-step"><div class="ba-num">2</div><div class="ba-step-text"><strong>AI instantly generates</strong> quantitative summary</div></div>
+        <div class="ba-step"><div class="ba-num">3</div><div class="ba-step-text"><strong>Qualitative themes synthesized</strong> — no raw quotes</div></div>
+        <div class="ba-step"><div class="ba-num">4</div><div class="ba-step-text"><strong>Leadership acts</strong> in minutes, not days</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE TOOL -->
+  <div class="section" id="tool">
+    <div class="section-eyebrow">The Tool</div>
+    <h2>I scoped it, designed it, and shipped it solo.</h2>
+    <p>Built solo. Claude API backend, deployed on Vercel, live at <a href="https://aic-events.vercel.app" target="_blank" style="color:var(--blue); text-decoration:none;">aic-events.vercel.app</a>. Not my background. Figured it out anyway. But the harder problem was never the code. It was knowing what leadership actually needed to see.</p>
+    <p>The first version returned a raw text block. It worked, but leadership still had to read everything to find what mattered. Same problem as before. So I went back to what I knew from a year of delivering manual slide decks: quantitative snapshots got attention, buried qualitative text got skimmed, anything over two minutes got ignored. That became the design spec</p>
+    
+    <div class="numbered-list" style="margin: 2rem 0;">
+      <div class="numbered-item">
+        <div class="num-badge">Stack</div>
+        <div class="num-content">
+          <h3>Claude API + React + Vercel</h3>
+          <p>Claude handles response synthesis and qualitative analysis. React renders the dashboard. Vercel hosts and deploys. The full pipeline runs in under 60 seconds from CSV upload to structured output.</p>
+        </div>
+      </div>
+      <div class="numbered-item">
+        <div class="num-badge">Input</div>
+        <div class="num-content">
+          <h3>Raw CSV export from Google Sheets</h3>
+          <p>No formatting required. Leadership uploads the direct export from the event feedback form and the tool handles the rest from parsing, analysis, to rendering.</p>
+        </div>
+      </div>
+      <div class="numbered-item">
+        <div class="num-badge">Output</div>
+        <div class="num-content">
+          <h3>Quantitative overview, demographic charts, qualitative themes</h3>
+          <p>Three sections in a fixed order: the four key stats first, demographic breakdowns second, AI-synthesized qualitative themes third. Each section answers a specific question leadership was already asking.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEO REEL -->
+    <div style="margin: 2rem 0; border-radius: 16px; overflow: hidden; background: #0a0a0a; position: relative;">
+      <video
+        autoplay muted loop playsinline
+        style="width:100%; display:block; border-radius:16px;"
+        poster="aic-after.png"
+      >
+        <source src="aic-reel.mp4" type="video/mp4">
+        <img src="aic-after.png" style="width:100%; border-radius:16px;">
+      </video>
+      <a href="https://aic-events.vercel.app" target="_blank" style="
+        position: absolute; bottom: 1.2rem; right: 1.2rem;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        color: white; font-size: 11px; font-weight: 500;
+        font-family: 'Inter', sans-serif;
+        letter-spacing: 0.06em; text-transform: uppercase;
+        text-decoration: none;
+        padding: 6px 14px; border-radius: 100px;
+        border: 1px solid rgba(255,255,255,0.2);
+      ">↗ Live Site</a>
+    </div>
+
+    <p style="font-size:0.825rem; color:var(--gray); text-align:center; margin-top: -0.5rem;">
+      Upload a CSV → AI generates quantitative summary + demographic charts + qualitative themes in under a minute
+    </p>
+  </div>
+
+  <!-- DESIGNING THE OUTPUT -->
+  <div class="section">
+    <div class="section-eyebrow">Designing the Output</div>
+    <h2>Every element was a deliberate decision, not a default.</h2>
+    <p>Every metric, chart, and interaction in the tool was a conscious product choice. The question I kept returning to: what does leadership actually need to see, and in what order?</p>
+
+    <!-- DESIGN DECISION 01 -->
+    <div style="margin: 3rem 0; display:grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+      <div>
+        <div class="num-badge" style="margin-bottom:0.8rem;">01</div>
+        <h3 style="font-size:1rem; font-weight:500; margin-bottom:0.6rem; line-height:1.3;">The top four stats answer the only four questions that matter immediately</h3>
+        <p style="font-size:0.875rem; color:var(--gray); line-height:1.7; max-width:100%;">Total responses tells you how big the event was. Average satisfaction tells you how most people felt. Median score removes outlier skew. And percentage rated 8–10 measures against an explicit org goal. These four numbers replaced the entire manual summary for a quick read.</p>
+      </div>
+      <img src="dd1.png" style="width:100%; border-radius:14px; display:block;">
+    </div>
+
+    <!-- DESIGN DECISION 02 -->
+    <div style="margin: 3rem 0; display:grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+      <img src="dd2.png" style="width:100%; border-radius:14px; display:block;">
+      <div>
+        <div class="num-badge" style="margin-bottom:0.8rem;">02</div>
+        <h3 style="font-size:1rem; font-weight:500; margin-bottom:0.6rem; line-height:1.3;">The demographic charts automate what the UXR team used to do by hand</h3>
+        <p style="font-size:0.875rem; color:var(--gray); line-height:1.7; max-width:100%;">Previously, someone manually combed through raw responses to report participant splits. The five dimensions — year, AIC involvement, technical skill, major distribution, and how they heard — were chosen because they map directly to the org's open questions about reach, inclusivity, and accessibility.</p>
+      </div>
+    </div>
+
+    <!-- DESIGN DECISION 03 -->
+    <div style="margin: 3rem 0; display:grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+      <div>
+        <div class="num-badge" style="margin-bottom:0.8rem;">03</div>
+        <h3 style="font-size:1rem; font-weight:500; margin-bottom:0.6rem; line-height:1.3;">Filtering turns a reporting tool into an investigative one</h3>
+        <p style="font-size:0.875rem; color:var(--gray); line-height:1.7; max-width:100%;">Individual charts tell you what happened. Filtering lets you ask why. Did first-year students with low technical skill rate the event differently than returning members? You can find out in one click instead of building a pivot table, instantly surfacing cross-patterns to ensure demographics are being served equally.</p>
+      </div>
+      <img src="dd3.png" style="width:100%; border-radius:14px; display:block;">
+    </div>
+
+    <!-- DESIGN DECISION 04 -->
+    <div style="margin: 3rem 0; display:grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+      <img src="dd4.png" style="width:100%; border-radius:14px; display:block;">
+      <div>
+        <div class="num-badge" style="margin-bottom:0.8rem;">04</div>
+        <h3 style="font-size:1rem; font-weight:500; margin-bottom:0.6rem; line-height:1.3;">The qualitative output iterated once based on direct leadership feedback</h3>
+        <p style="font-size:0.875rem; color:var(--gray); line-height:1.7; max-width:100%;">The first version surfaced key themes, synthesized and skimmable. But in a 1-1, leadership said they wanted to know why a theme appeared, the way we used to share raw quotes in manual updates. So I iterated on the prompt to surface supporting quotes beneath each theme and generate recommendations with explicit rationale. Three layers: theme, evidence, action.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMPACT -->
+  <div class="section">
+    <div class="section-eyebrow">Learnings & Impact</div>
+    <h2>This experience sharpened how I think about research and product decisions.</h2>
+
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div class="impact-num">50+</div>
+        <div class="impact-desc">Responses per event now processed in under a minute, fully automated.</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">6–7×</div>
+        <div class="impact-desc">Events per quarter feeding into a consistent, comparable data system.</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">✓ Live</div>
+        <div class="impact-desc">Active adoption by AIC leadership. Real decisions made from real data.</div>
+      </div>
+    </div>
+
+    <div class="learnings-list" style="margin-top: 2.5rem;">
+      <div class="learning">
+        <div class="learning-icon">🔍</div>
+        <div>
+          <h3>Research doesn't stop at insight. It has to ship.</h3>
+          <p>Understanding the problem is only half the work. Building the tool that actually closed the gap meant the research finally mattered to the people it was for, not just the team that did it.</p>
+        </div>
+      </div>
+      <div class="learning">
+        <div class="learning-icon">📐</div>
+        <div>
+          <h3>Definitions are infrastructure.</h3>
+          <p>Spending time early defining who counts as a member unlocked every downstream decision. Skipping that step would have meant analyzing noise.</p>
+        </div>
+      </div>
+      <div class="learning">
+        <div class="learning-icon">👁</div>
+        <div>
+          <h3>Watch what people use, not what they say they want.</h3>
+          <p>A year of delivering post-event decks taught me more about the tool's requirements than any requirements doc would have. The output format came directly from those observations.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEXT UP -->
+  <div class="next-section">
+    <div class="section-eyebrow">Next Up…</div>
+    <div class="next-cards">
+      <a href="second-opinion.html" class="next-card">
+        <div class="next-thumb next-thumb-so">
+          <div class="next-thumb-glyph">🏥</div>
+          <div class="next-thumb-label">Product Design · 2025</div>
+        </div>
+        <div class="next-body">
+          <div class="next-title">Second Opinion — AI Clinical Judgment</div>
+          <div class="next-desc">Research-led simulation teaching when to trust AI diagnostics — and when to override them</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- SIGN OFF -->
+<div class="signoff" style="max-width: 1040px; margin: 0 auto; padding: 4rem 3rem 2rem;">
+  <p>Glad we could cross paths.<br>I hope it left you with a bit of curiosity.</p>
+</div>
+
+<footer>
+  <span class="footer-copy">© Jasleen Gunsi 2026</span>
+  <div class="footer-links">
+    <a href="mailto:jasleengunsi@gmail.com">Email</a>
+    <a href="https://linkedin.com/in/jasleen-gunsi">LinkedIn</a>
+    <a href="#">Resume</a>
+  </div>
+</footer>
+
+<script>
+// Subtle Apple-style tilt on hover for cards
+const tiltCards = document.querySelectorAll(
+  '.tier-card, .survey-card, .opp-card, .impact-card, .quote-card'
+);
+
+tiltCards.forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+    const tiltX = ((y - cy) / cy) * 3;   // max 3deg
+    const tiltY = ((cx - x) / cx) * 3;
+    card.style.transform = `translateY(-3px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+    card.style.transition = 'transform 0.1s ease, box-shadow 0.3s ease';
+  });
+
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+    card.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease';
+  });
+});
+</script>
+</body>
+</html>

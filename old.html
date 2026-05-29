@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jasleen Gunsi — UX Research & Product</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black: #1d1d1f;
+  --gray: #6e6e73;
+  --light-gray: #f5f5f7;
+  --border: #d2d2d7;
+  --white: #ffffff;
+  --blue: #0071e3;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  background: var(--white);
+  color: var(--black);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  height: 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem;
+}
+.nav-name {
+  font-size: 14px; font-weight: 500; color: var(--black);
+  text-decoration: none; letter-spacing: -0.01em;
+}
+.nav-links { display: flex; gap: 1.8rem; list-style: none; }
+.nav-links a {
+  font-size: 13px; color: var(--black); text-decoration: none;
+  opacity: 0.7; transition: opacity 0.15s; font-weight: 400;
+}
+.nav-links a:hover { opacity: 1; }
+.nav-cta {
+  font-size: 13px; font-weight: 400;
+  color: var(--blue); text-decoration: none;
+  transition: opacity 0.15s;
+}
+.nav-cta:hover { opacity: 0.75; }
+
+/* HERO */
+.hero {
+  padding: 110px 2rem 72px;
+  max-width: 980px; margin: 0 auto;
+  text-align: center;
+}
+.hero-eyebrow {
+  font-size: 11px; font-weight: 400;
+  color: var(--gray); letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  animation: fadeUp 0.6s ease both;
+}
+.hero h1 {
+  font-size: clamp(3.6rem, 8vw, 7rem);
+  font-weight: 500; line-height: 1.04;
+  letter-spacing: -0.04em; color: var(--black);
+  margin-bottom: 1rem;
+  animation: fadeUp 0.6s 0.1s ease both; opacity: 0; animation-fill-mode: both;
+}
+.hero h1 strong { font-weight: 500; }
+.hero-sub {
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+  font-weight: 300; color: var(--gray);
+  line-height: 1.6; max-width: 500px; margin: 0 auto 2rem;
+  letter-spacing: -0.005em;
+  animation: fadeUp 0.6s 0.2s ease both; opacity: 0; animation-fill-mode: both;
+}
+.hero-actions {
+  display: flex; gap: 1rem; justify-content: center; align-items: center;
+  animation: fadeUp 0.6s 0.3s ease both; opacity: 0; animation-fill-mode: both;
+}
+.btn-primary {
+  display: inline-flex; align-items: center;
+  background: var(--blue); color: white;
+  font-size: 14px; font-weight: 400; letter-spacing: -0.01em;
+  padding: 10px 22px; border-radius: 980px;
+  text-decoration: none; transition: background 0.15s, transform 0.15s;
+}
+.btn-primary:hover { background: #0077ed; transform: scale(1.01); }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 4px;
+  color: var(--blue); font-size: 14px; font-weight: 400;
+  text-decoration: none; transition: opacity 0.15s;
+}
+.btn-secondary:hover { opacity: 0.7; }
+.btn-secondary::after { content: ' ›'; }
+
+/* DIVIDER */
+.divider {
+  max-width: 980px; margin: 0 auto;
+  border: none; border-top: 1px solid var(--border);
+}
+
+/* WORK SECTION */
+.work {
+  max-width: 980px; margin: 0 auto;
+  padding: 80px 2rem;
+}
+.section-label {
+  font-size: 12px; font-weight: 500; color: var(--gray);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 3rem; text-align: center;
+}
+
+/* PROJECT CARDS — Apple card style */
+.project-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.project-card {
+  background: var(--light-gray);
+  border-radius: 20px; overflow: hidden;
+  text-decoration: none; color: var(--black);
+  display: flex; flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+.project-card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+}
+
+.card-body { padding: 1.8rem 2.2rem 2rem; }
+
+.card-tag {
+  display: inline-block;
+  font-size: 11px; font-weight: 500; color: var(--gray);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+.card-title {
+  font-size: 1.4rem; font-weight: 500;
+  letter-spacing: -0.025em; line-height: 1.15;
+  margin-bottom: 0.5rem; color: var(--black);
+}
+.card-desc {
+  font-size: 0.875rem; color: var(--gray);
+  line-height: 1.6; font-weight: 300;
+  max-width: 340px; margin-bottom: 1.2rem;
+}
+.card-link {
+  font-size: 13px; color: var(--gray); font-weight: 400;
+  display: inline-flex; align-items: center; gap: 3px;
+}
+.card-link::after { content: ' ›'; }
+
+/* CARD VISUAL AREAS */
+.card-visual {
+  width: 100%; height: 240px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; position: relative;
+  order: -1;
+}
+
+/* Second Opinion — dark clinical */
+.visual-so {
+  background: linear-gradient(160deg, #0a0e0a 0%, #0d1a10 100%);
+}
+.so-ui {
+  width: 85%; background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+  overflow: hidden;
+}
+.so-ui-bar {
+  background: rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.07);
+  padding: 7px 12px; display: flex; align-items: center; gap: 5px;
+}
+.so-dot { width: 7px; height: 7px; border-radius: 50%; }
+.so-dot-r { background: #ff5f57; } .so-dot-y { background: #febc2e; } .so-dot-g { background: #28c840; }
+.so-ui-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 7px; }
+.so-row { display: flex; gap: 6px; }
+.so-chip { flex: 1; padding: 7px 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 7px; }
+.so-chip-l { font-family: 'SF Mono', monospace; font-size: 7px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+.so-chip-v { font-family: 'SF Mono', monospace; font-size: 0.9rem; font-weight: 500; }
+.so-chip-v.blue { color: #63b3ed; } .so-chip-v.green { color: #68d391; } .so-chip-v.amber { color: #f6ad55; }
+.so-bar-block { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 7px; padding: 7px 8px; }
+.so-bar-l { font-family: 'SF Mono', monospace; font-size: 7px; color: rgba(255,255,255,0.25); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
+.so-track { background: rgba(255,255,255,0.08); border-radius: 2px; height: 3px; margin-bottom: 4px; }
+.so-fill { height: 3px; border-radius: 2px; background: #63b3ed; }
+
+/* AISC — light minimal */
+.visual-aisc {
+  background: linear-gradient(160deg, #f0f4f8 0%, #e8eef4 100%);
+}
+.aisc-ui {
+  width: 85%; background: white;
+  border: 1px solid rgba(0,0,0,0.08); border-radius: 10px; overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.aisc-ui-bar {
+  background: #f8f8f8; border-bottom: 1px solid rgba(0,0,0,0.07);
+  padding: 7px 12px; display: flex; justify-content: space-between; align-items: center;
+}
+.aisc-bar-l { font-size: 8px; color: #999; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
+.aisc-bar-v { font-size: 9px; font-weight: 600; color: #3a7a4a; }
+.aisc-ui-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 7px; }
+.aisc-stats { display: flex; gap: 6px; }
+.aisc-stat { flex: 1; background: #f5f5f7; border-radius: 7px; padding: 6px 8px; }
+.aisc-stat-n { font-size: 0.9rem; font-weight: 600; color: #1d1d1f; }
+.aisc-stat-l { font-size: 7px; color: #999; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 1px; }
+.aisc-bars { display: flex; flex-direction: column; gap: 4px; }
+.aisc-brow { display: flex; justify-content: space-between; margin-bottom: 2px; }
+.aisc-bname { font-size: 8px; color: #999; }
+.aisc-track { background: #ebebeb; border-radius: 2px; height: 3px; }
+.aisc-fill { height: 3px; border-radius: 2px; background: #1d1d1f; }
+.aisc-insight { background: #f0faf3; border: 1px solid #c8e8d0; border-radius: 7px; padding: 6px 8px; font-size: 8px; color: #3a7a4a; line-height: 1.4; }
+
+/* CREDENTIALS STRIP */
+.credentials {
+  max-width: 980px; margin: 0 auto;
+  padding: 0 2rem 80px;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border); border-radius: 18px; overflow: hidden;
+}
+.cred-item {
+  background: var(--white); padding: 2rem 2rem;
+  display: flex; flex-direction: column; gap: 0.3rem;
+}
+.cred-label {
+  font-size: 11px; font-weight: 500; color: var(--gray);
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.cred-value { font-size: 0.95rem; font-weight: 400; color: var(--black); letter-spacing: -0.01em; line-height: 1.4; }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem;
+  max-width: 980px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-copy { font-size: 12px; color: var(--gray); }
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a { font-size: 12px; color: var(--gray); text-decoration: none; transition: color 0.15s; }
+.footer-links a:hover { color: var(--black); }
+
+/* ANIM */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 720px) {
+  .hero { padding: 100px 1.5rem 70px; }
+  .project-grid { grid-template-columns: 1fr; }
+  .credentials { grid-template-columns: 1fr; }
+  nav { padding: 0 1.5rem; }
+  .nav-links { display: none; }
+  footer { flex-direction: column; gap: 1rem; padding: 1.5rem; }
+  .work { padding: 60px 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-name">Jasleen Gunsi</a>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Resume</a></li>
+  </ul>
+  <a href="mailto:jasleengunsi@gmail.com" class="nav-cta">Get in touch</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Computational Cognitive Science · UC Davis · Available June 2026</div>
+  <h1>Jasleen Gunsi</h1>
+  <p class="hero-sub">Good research tells you what to make. I do both.</p>
+  <div class="hero-actions">
+    <a href="#work" class="btn-primary">View My Work</a>
+    <a href="#" class="btn-secondary">Download Resume</a>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- WORK -->
+<section class="work" id="work">
+  <div class="section-label">Selected Work</div>
+  <div class="project-grid">
+
+    <!-- SECOND OPINION -->
+    <a href="second-opinion.html" class="project-card">
+      <div class="card-body">
+        <div class="card-tag">Systems Designer · Research Lead</div>
+        <div class="card-title">Second Opinion</div>
+        <p class="card-desc">A simulation game teaching medical students when to trust AI diagnostics — and when to override them. Research-led, interface-shipped.</p>
+        <div class="card-link">Read more</div>
+      </div>
+
+      <div class="card-visual visual-so">
+        <img src="so-card.png" style="width:130%; height:100%; object-fit:cover; object-position:top;">
+      </div>
+    </a>
+
+    <!-- AIC -->
+    <a href="aic-case-study.html" class="project-card">
+      <div class="card-body">
+        <div class="card-tag">UX Researcher · Product Lead</div>
+        <div class="card-title">AIC Feedback Intelligence</div>
+        <p class="card-desc">An org serving hundreds of students per quarter had no visibility into what was working. I built the research infrastructure and AI tool that changed that.</p>
+        <!--<div class="card-link">Read more</div> -->
+      </div>
+      <div class="card-visual visual-aisc">
+        <img src="aic-card.png" style="width:130%; height:100%; object-fit:cover; object-position:top;">
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-copy">© Jasleen Gunsi 2026</span>
+  <div class="footer-links">
+    <a href="mailto:you@email.com">Email</a>
+    <a href="#">LinkedIn</a>
+    <a href="#">Resume</a>
+  </div>
+</footer>
+
+</body>
+</html>
